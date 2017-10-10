@@ -21,15 +21,53 @@ function searchBandsInTown(artist) {
     		// add bootstrap class to the div
     		newDiv.addClass("well");
 
+    		// create a div within the newDiv for the date (for formatting purposes)
+    		var dateDiv = $("<div>");
+    		// dateDiv.addClass("col-sm-4");
+    		dateDiv.addClass("date-div");
+
+    		var datePara = $("<p>");
+    		var timePara = $("<p>");
+
+    		// date formatting with moment.js
+    		var dateDivValue = response[i].datetime;
+
+    		// test
+    		// console.log(dateDivValue);
+    		// console.log(moment(dateDivValue).format("MMM Do YYYY"));
+
+    		var venueDate = moment(dateDivValue).format("MMM Do YYYY")
+    		var doorsOpen = moment(dateDivValue).format("h:mm");
+
+    		datePara.text(venueDate);
+    		timePara.text(doorsOpen);
+
+    		dateDiv.append(datePara);
+    		dateDiv.append(timePara);
+    		newDiv.append(dateDiv);
+
+    		// vertical line <hr> attempt
+			var verticalLineDiv = $("<div>");
+			verticalLineDiv.addClass("verticalLine");
+			newDiv.append(verticalLineDiv);
+
+    		// create a new div for the venue details (name, location) for formatting purposes
+    		var venueDiv = $("<div>");
+    		// venueDiv.addClass("col-sm-8");
+    		venueDiv.addClass("venue-div");
+
     		// create a headline for the new div
     		var newDivHeadline = $("<h3>");
     		newDivHeadline.text(response[i].venue.name);
-    		newDiv.append(newDivHeadline);
+    		venueDiv.append(newDivHeadline);
 
     		// create snippet text for the new div
     		var newDivSnippet = $("<p>");
     		newDivSnippet.text(response[i].venue.city + ", " + response[i].venue.country);
-    		newDiv.append(newDivSnippet);
+    		venueDiv.append(newDivSnippet);
+
+    		// append venueDiv to newDiv
+    		newDiv.append(venueDiv);
 
     		// append the new divs to the #results-div
     		$("#results-div").append(newDiv);

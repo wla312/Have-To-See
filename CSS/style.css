@@ -1,0 +1,16 @@
+.date-div {
+	display: inline-block;
+}
+
+.venue-div {
+	display: inline-block;
+	margin-left: 25px;
+}
+
+.verticalLine {
+	display: inline-block;
+	margin-left: 25px;
+  	border-left: solid grey;
+  	border-width: 1px;
+  	height: 4em;
+}
