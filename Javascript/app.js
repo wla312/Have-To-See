@@ -13,8 +13,19 @@ function searchBandsInTown(artist) {
     	// test functionality
     	// console.log(response);
 
-    	// for loop to dynamically create html elements with the AJAX response
-    	for (var i = 0; i<response.length; i++) {
+    	// if/else to address instances where there's no upcoming tour dates 
+    	if (response.length === 0) {
+    		var noShowsDiv = $("<div>");
+    		noShowsDiv.addClass("text-center");
+    		var noShowsPara = $("<p>");
+    		noShowsPara.text("Sorry, we don't know of any upcoming shows for " + artist + ".");
+    		noShowsDiv.append(noShowsPara);
+    		$("#results-div").append(noShowsDiv);
+    	}
+    	else {
+
+    		// for loop to dynamically create html elements with the AJAX response
+    		for (var i = 0; i<response.length; i++) {
 
     		// create a new div for each response[i]
     		var newDiv = $("<div>");
@@ -71,9 +82,9 @@ function searchBandsInTown(artist) {
 
     		// append the new divs to the #results-div
     		$("#results-div").append(newDiv);
+    		}
     	}
     });
-
 };
 
 	// when user clicks #search-btn...
