@@ -79,6 +79,9 @@ function searchBandsInTown(artist) {
 	// when user clicks #search-btn...
 	$("#search-btn").on("click", function() {
 
+	// empty the #results-div
+	$("#results-div").empty();
+
 	// place the search term user input into a variable
 	var userArtist = $("#searchBand").val().trim();
 
