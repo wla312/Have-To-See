@@ -21,8 +21,36 @@
 
 <body>
 
-<!-- container div for html elements -->
+<!-- container div for search html elements -->
 <div class="container">
+
+<br><br>
+
+        <!-- div for header/title of page -->
+    <div class="jumbotron">
+        <h1 class="text-center">Musichead Travel</h1>
+    </div>
+
+    <!-- form for artist/musician search field -->
+    <form>
+        <!-- input for search term/keywords -->
+        <div class="form-group">
+            <label for="searchBand">Enter Musician/Band Name Here:</label>
+            <input type="text" class="form-control" id="searchBand" placeholder="">
+        </div>
+    </form>
+
+    <!-- buttons -->
+    <button type="button" class="btn btn-default" id="search-btn">Search</button>
+
+    <button type="button" class="btn btn-default" id="clear-btn">Clear Results</button> 
+
+</div>
+
+<br><br>
+
+<!-- div to push all search results html -->
+<div class="container" id="results-div">
 
 </div>
 
