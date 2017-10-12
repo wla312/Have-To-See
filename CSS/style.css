@@ -14,3 +14,9 @@
   	border-width: 1px;
   	height: 4em;
 }
+
+.see-flights {
+	display: inline-block;
+	float: right;
+	margin-top: 30px;
+}
