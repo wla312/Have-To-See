@@ -4,6 +4,8 @@ var venueLong;
 
 var tourArray = [];
 
+var seeFlights;
+
 $(document).ready(function() {
 
 function searchBandsInTown(artist) {
@@ -66,9 +68,10 @@ function searchBandsInTown(artist) {
         		newDiv.append(dateDiv);
 
                 // create button to see flights
-                var seeFlights = $("<button>");
+                seeFlights = $("<button>");
                 seeFlights.addClass("see-flights btn btn-default btn-lg");
-                seeFlights.attr("id", "flights");
+                seeFlights.attr("lat", response[i].venue.latitude);
+                seeFlights.attr("long", response[i].venue.longitude);
                 seeFlights.text("See Flights");
                 newDiv.append(seeFlights);
 
@@ -105,7 +108,7 @@ function searchBandsInTown(artist) {
                 venueLat = response[i].venue.latitude;
                 venueLong = response[i].venue.longitude;
 
-                // ajax call to airportsfinder API for each tour stop
+                ajax call to airportsfinder API for each tour stop
                 $.ajax({
                 type: "GET",
                 url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/nearest?lat=" + venueLat + "&lng=" + venueLong,
@@ -127,8 +130,10 @@ function searchBandsInTown(artist) {
 };
     
     // on-click event for #flights button
-    $(document).on("click","#flights",function(){
-        console.log("flights button clicked!")
+    $(document).on("click",".see-flights",function(){
+        console.log("flights button clicked!");
+        console.log($(this).attr("lat"));
+        console.log($(this).attr("long"))
     });
 
 	// when user clicks #search-btn...
