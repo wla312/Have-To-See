@@ -1,8 +1,10 @@
 // band search JS file
+
+// global variables
 var venueLat;
 var venueLong;
 
-var tourArray = [];
+// var tourArray = [];
 
 var seeFlights;
 
@@ -105,25 +107,25 @@ function searchBandsInTown(artist) {
                 // console.log("Venue: " + response[i].venue.name + " Lat: " + response[i].venue.latitude + " Long: " + response[i].venue.longitude);
 
                 // assign values to global venueLat and venueLong variables for venue latitude and venue longitude
-                venueLat = response[i].venue.latitude;
-                venueLong = response[i].venue.longitude;
+                // venueLat = response[i].venue.latitude;
+                // venueLong = response[i].venue.longitude;
 
-                ajax call to airportsfinder API for each tour stop
-                $.ajax({
-                type: "GET",
-                url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/nearest?lat=" + venueLat + "&lng=" + venueLong,
-                // url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/by-text?berlin",
-                dataType: "json",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("X-Mashape-Key", "YKavuk3HBMmshdVc1YxGBc83cJy7p1r1GBejsn5eMZzj7eGeYz");
-                    xhr.setRequestHeader("Accept", "application/json");
-                    }
-                }).done(function(result){
-                    console.log(result);
+                // ajax call to airportsfinder API for each tour stop
+                // $.ajax({
+                // type: "GET",
+                // url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/nearest?lat=" + venueLat + "&lng=" + venueLong,
+                // // url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/by-text?berlin",
+                // dataType: "json",
+                // beforeSend: function (xhr) {
+                //     xhr.setRequestHeader("X-Mashape-Key", "YKavuk3HBMmshdVc1YxGBc83cJy7p1r1GBejsn5eMZzj7eGeYz");
+                //     xhr.setRequestHeader("Accept", "application/json");
+                //     }
+                // }).done(function(result){
+                //     console.log(result);
 
                 // artistDates[i].airportCode = result.code;
 
-                })
+                // })
     		}
     	}
     });
@@ -131,9 +133,55 @@ function searchBandsInTown(artist) {
     
     // on-click event for #flights button
     $(document).on("click",".see-flights",function(){
-        console.log("flights button clicked!");
-        console.log($(this).attr("lat"));
-        console.log($(this).attr("long"))
+        // test it out!
+        // console.log("flights button clicked!");
+        // console.log($(this).attr("lat"));
+        // console.log($(this).attr("long"));
+
+        // assign values to global venueLat and venueLong variables for venue latitude and venue longitude
+        venueLat = $(this).attr("lat");
+        venueLong = $(this).attr("long");
+
+        // ajax call to airportsfinder API for each tour stop
+        $.ajax({
+        type: "GET",
+        url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/nearest?lat=" + venueLat + "&lng=" + venueLong,
+        // url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/by-text?berlin",
+        dataType: "json",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("X-Mashape-Key", "YKavuk3HBMmshdVc1YxGBc83cJy7p1r1GBejsn5eMZzj7eGeYz");
+            xhr.setRequestHeader("Accept", "application/json");
+            }
+        }).done(function(result){
+            var venueAirportCode = result.code;
+
+            var body = {
+                "request": {
+                    "slice": [{
+                        "origin": "CHI",
+                        "destination": venueAirportCode,
+                        "date": "2017-10-31"
+                    }],
+                    "passengers": {
+                        "adultCount": 1
+                    },
+                    "solutions": 1,
+                    "prettyPrint": true
+                }
+            }
+
+            var queryURL = "https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyDQSZeCdZXcvuj-gA1fEUXpWEz1PIogns8";
+
+            $.ajax({
+                url: queryURL,
+                data: JSON.stringify(body),
+                method: "POST",
+                contentType: "application/json; charset=utf-8",
+            }).done(function(response) {
+
+                console.log(response);
+            });
+        })
     });
 
 	// when user clicks #search-btn...
