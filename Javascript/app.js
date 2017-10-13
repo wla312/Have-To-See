@@ -54,14 +54,6 @@ function searchBandsInTown(artist) {
         		// console.log(dateDivValue);
         		// console.log(moment(dateDivValue).format("MMM Do YYYY"));
 
-
-                // create button to see flights
-                var seeFlights = $("<button>");
-                seeFlights.addClass("see-flights btn btn-default btn-lg");
-                seeFlights.attr("id", "flights");
-                seeFlights.text("See Flights");
-                newDiv.append(seeFlights);
-
         		var venueDate = moment(dateDivValue).format("MMM Do YYYY")
         		var doorsOpen = moment(dateDivValue).format("h:mm");
 
@@ -72,6 +64,13 @@ function searchBandsInTown(artist) {
         		dateDiv.append(datePara);
         		dateDiv.append(timePara);
         		newDiv.append(dateDiv);
+
+                // create button to see flights
+                var seeFlights = $("<button>");
+                seeFlights.addClass("see-flights btn btn-default btn-lg");
+                seeFlights.attr("id", "flights");
+                seeFlights.text("See Flights");
+                newDiv.append(seeFlights);
 
         		// vertical line <hr> attempt
     			var verticalLineDiv = $("<div>");
@@ -126,6 +125,11 @@ function searchBandsInTown(artist) {
     	}
     });
 };
+    
+    // on-click event for #flights button
+    $(document).on("click","#flights",function(){
+        console.log("flights button clicked!")
+    });
 
 	// when user clicks #search-btn...
 	$("#search-btn").on("click", function() {
@@ -137,25 +141,20 @@ function searchBandsInTown(artist) {
     	var userArtist = $("#searchBand").val().trim();
 
 
-	   // console log the userArtist variable as a test
+	    // console log the userArtist variable as a test
     	console.log("User Search Input: " + userArtist);
 
     	// call searchBandsInTown function 
     	searchBandsInTown(userArtist);
 
 	});
+    // when user clicks #clear-btn...
+    $("#clear-btn").on("click", function() {
 
-    $(document).on("click","#flights",function(){
-        console.log("flights button clicked!")
+        // empty the #results-div
+        $("#results-div").empty();
+
+        // empty the #searchBand input
+        $("#searchBand").val("");
     });
-
-	// when user clicks #clear-btn...
-	$("#clear-btn").on("click", function() {
-
-		// empty the #results-div
-		$("#results-div").empty();
-
-		// empty the #searchBand input
-		$("#searchBand").val("");
-	});
 });
