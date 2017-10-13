@@ -39,6 +39,7 @@ $(document).ready(function() {
                     // create button to see flights
                     var seeFlights = $("<button>");
                     seeFlights.addClass("see-flights btn btn-default btn-lg");
+                    seeFlights.attr("id", "flights");
                     seeFlights.text("See Flights");
                     newDiv.append(seeFlights);
 
@@ -91,6 +92,12 @@ $(document).ready(function() {
             }
         });
     };
+
+    
+
+    $(document).on("click","#flights",function(){
+        console.log("flights button clicked!")
+    });
 
     // when user clicks #search-btn...
     $("#search-btn").on("click", function() {
