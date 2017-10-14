@@ -3,6 +3,22 @@
 // global variables
 var venueLat;
 var venueLong;
+var newDiv;
+var dateDiv;
+var datePara;
+var timePara;
+var dateDivValue;
+var venueDate;
+var doorsOpen;
+var verticalLineDiv;
+var venueDiv;
+var newDivHeadline;
+var newDivSnippet;
+var flightPrice;
+var flightCarrier;
+
+
+
 
 // var tourArray = [];
 
@@ -39,27 +55,27 @@ function searchBandsInTown(artist) {
     		for (var i = 0; i<response.length; i++) {
 
         		// create a new div for each response[i]
-        		var newDiv = $("<div>");
+        		newDiv = $("<div>");
         		// add bootstrap class to the div
         		newDiv.addClass("well");
 
         		// create a div within the newDiv for the date (for formatting purposes)
-        		var dateDiv = $("<div>");
+        		dateDiv = $("<div>");
         		// dateDiv.addClass("col-sm-4");
         		dateDiv.addClass("date-div");
 
-        		var datePara = $("<p>");
-        		var timePara = $("<p>");
+        		datePara = $("<p>");
+        		timePara = $("<p>");
 
         		// date formatting with moment.js
-        		var dateDivValue = response[i].datetime;
+        		dateDivValue = response[i].datetime;
 
         		// test
         		// console.log(dateDivValue);
         		// console.log(moment(dateDivValue).format("MMM Do YYYY"));
 
-        		var venueDate = moment(dateDivValue).format("MMM Do YYYY")
-        		var doorsOpen = moment(dateDivValue).format("h:mm");
+        		venueDate = moment(dateDivValue).format("MMM Do YYYY")
+        		doorsOpen = moment(dateDivValue).format("h:mm");
 
 
         		datePara.text(venueDate);
@@ -78,22 +94,22 @@ function searchBandsInTown(artist) {
                 newDiv.append(seeFlights);
 
         		// vertical line <hr> attempt
-    			var verticalLineDiv = $("<div>");
+    			verticalLineDiv = $("<div>");
     			verticalLineDiv.addClass("verticalLine");
     			newDiv.append(verticalLineDiv);
 
         		// create a new div for the venue details (name, location) for formatting purposes
-        		var venueDiv = $("<div>");
+        		venueDiv = $("<div>");
         		// venueDiv.addClass("col-sm-8");
         		venueDiv.addClass("venue-div");
 
         		// create a headline for the new div
-        		var newDivHeadline = $("<h3>");
+        		newDivHeadline = $("<h3>");
         		newDivHeadline.text(response[i].venue.name);
         		venueDiv.append(newDivHeadline);
 
         		// create snippet text for the new div
-        		var newDivSnippet = $("<p>");
+        		newDivSnippet = $("<p>");
         		newDivSnippet.text(response[i].venue.city + ", " + response[i].venue.country);
         		venueDiv.append(newDivSnippet);
 
@@ -154,6 +170,7 @@ function searchBandsInTown(artist) {
             }
         }).done(function(result){
             var venueAirportCode = result.code;
+            console.log(venueAirportCode);
 
             var body = {
                 "request": {
@@ -170,7 +187,7 @@ function searchBandsInTown(artist) {
                 }
             }
 
-            var queryURL = "https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyDQSZeCdZXcvuj-gA1fEUXpWEz1PIogns8";
+            var queryURL = "https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyDfaUhACZQENh5FejRFNBxjGt40gQYmqB0";
 
             $.ajax({
                 url: queryURL,
@@ -178,8 +195,31 @@ function searchBandsInTown(artist) {
                 method: "POST",
                 contentType: "application/json; charset=utf-8",
             }).done(function(response) {
-
+                // test
                 console.log(response);
+                
+                // create variables for flight price and carrier
+                flightPrice = response.trips.tripOption[0].saleTotal;
+                flightCarrier = response.trips.data.carrier[0].name;
+
+                // test
+                console.log(flightPrice);
+                console.log(flightCarrier);
+
+                // create dynamic flight div for .see-flights click button
+                // var flightsDiv = $("<div>");
+                // flightsDiv.addClass("flights-div");
+
+                // var flightPricePara = $("<p>");
+                // flightPricePara.text("Flights from: " + flightPrice);
+                // flightsDiv.append(flightPricePara);
+
+                // var flightCarrierPara = $("<p>");
+                // flightCarrierPara.text("Airline: " + flightCarrier);
+                // flightsDiv.append(flightCarrierPara);
+
+                // newDiv.append(flightsDiv);
+
             });
         })
     });
