@@ -16,7 +16,7 @@
       var database = firebase.database();
 
         var userArtist = "";
-      
+
       $("#search-btn").on("click", function(event) {
         event.preventDefault();
         userArtist = $("#searchBand").val().trim();
@@ -25,7 +25,7 @@
           userArtist: userArtist,
         }
 
-        
+
         database.ref('searchTerms').once('value').then(function(snapshot) {
             console.log(snapshot.val());
             console.log("artist: " + userArtist);
@@ -40,15 +40,15 @@
                 database.ref('searchTerms/' + userArtist).set(1);
             }
         });
-      
+
       database.ref().orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
         var mysnapshot = "Recent Searches :";
         // Print the initial data to the console.
         console.log(mysnapshot, snapshot.val());
 
         $("#displayed-data").append("<h1>" + " " + snapshot.val().userArtist + "</h1>");
-        
-     }, 
+
+     },
       function(errorObject) {
         console.log("The read failed: " + errorObject.code);
       });
@@ -85,6 +85,14 @@ var seeFlights;
 
 $(document).ready(function() {
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////                                                               //////////////////////
+    ///////////////////////////                   Search Band Function                        //////////////////////
+    ///////////////////////////                                                               //////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 function searchBandsInTown(artist) {
 
 		// querying the bandsintown api upcoming artist events for the selected artist
@@ -99,7 +107,7 @@ function searchBandsInTown(artist) {
 
         var artistDates = response;
 
-    	// if/else to address instances where there's no upcoming tour dates 
+    	// if/else to address instances where there's no upcoming tour dates
     	if (response.length === 0) {
     		var noShowsDiv = $("<div>");
     		noShowsDiv.addClass("text-center");
@@ -222,7 +230,16 @@ function searchBandsInTown(artist) {
     	}
     });
 };
-    
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////                                                               //////////////////////
+///////////////////////////                   Search Fligths                              //////////////////////
+///////////////////////////                                                               //////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
     // on-click event for #flights button
     $(document).on("click",".see-flights",function(){
         // test it out!
@@ -279,7 +296,7 @@ function searchBandsInTown(artist) {
             }).done(function(response) {
                 // test
                 console.log(response);
-                
+
                 // create variables for flight price and carrier
                 flightPrice = response.trips.tripOption[0].saleTotal;
                 flightCarrier = response.trips.data.carrier[0].name;
@@ -307,6 +324,154 @@ function searchBandsInTown(artist) {
         })
     });
 
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////                                                               //////////////////////
+    ///////////////////////////                   Initial Load Process                        //////////////////////
+    ///////////////////////////                                                               //////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    var featured = ["madona", "the weeknd", "drake"]
+
+
+    /////////////////////// THIS CREATES A ROW WHERE ALL FEATURED ARTISTS WILL APPEAR //////////////////////////////
+    var featuredDiv1 = $("<div>");
+    featuredDiv1.addClass("row");
+
+    /////////////////////// THIS WILL LOOP THROUGH ALL THE ARTISTS FEATURED ON OUR WEBSITE /////////////////////////
+    for (var i = 0; i < featured.length; i++) {
+    artistFun(featured[i])
+    }
+
+
+        function artistFun (arr) {
+        var queryURL1 = "https://rest.bandsintown.com/artists/" + arr + "?app_id=havetosee";
+
+        $.ajax({
+          url: queryURL1,
+          method: "GET"
+        }).done(function(artistData) {
+
+
+
+
+            var queryURL2 = "https://rest.bandsintown.com/artists/"+ arr +"/events?app_id=havetosee";
+
+            $.ajax({
+              url: queryURL2,
+              method: "GET"
+            }).done(function(eventsData) {
+
+    ///////////////////// THIS WILL CREATE ARTIST LEVEL INFORMATION FOR  BAND /////////////////////
+
+                var featuredDiv2 = $("<div>");
+                featuredDiv2.addClass("col-lg-4").addClass("col-md-6").addClass("col-sm-6");
+
+
+                var ticketCardDiv = $("<div>");
+                ticketCardDiv.addClass("ticket-card");
+
+          var trainTime = eventsData[0].datetime
+
+                var dateDivValue = eventsData[0].datetime;
+                var venueDate = moment(dateDivValue).format("MMM DD YYYY")
+                var concertHumanized
+
+                if (moment().diff(venueDate,"days") *(-1) <1) {
+                    concertHumanized = "Tonight"
+                } else {
+                    concertHumanized = "In " + moment.duration(moment().diff(venueDate,"days") *(-1),"days").humanize()
+                }
+
+                ticketCardDiv.append( "<div class='cover'>" +
+                                        "<img src='"+artistData.thumb_url+"'/> "+
+                                        "<div class='info'>"+
+                                            "<div class='going'>"+
+                                                "<i class='fa fa-group'></i>" + eventsData[0].venue.city + ', ' + eventsData[0].venue.country +
+                                            "</div>"+
+                                            "<div class='tickets-left'> <i class='fa fa-ticket'></i> " + concertHumanized + "</div>"+
+                                        "</div> </div>"
+                                    )
+
+
+                ticketCardDiv.append("<div class='body'>"+
+                                        "<div class='artist'>"+
+                                            // "<h6 class='info'>Global Tour 2016</h6>" +
+                                            "<h4 class='name'>" +artistData.name+ "</h4>"+
+                                        "</div>"+
+                                        "<div class='price'>" +
+                                            "<div class='from'>From</div>" +
+                                                "<div class='value'>" +
+                                                "<b>$</b>599" +
+                                            "</div>" +
+                                        "</div>" +
+                                        "<div class='clearfix'></div>" +
+                                        "</div>"
+    )
+
+
+
+                var collapseDiv = $("<div>")
+                collapseDiv.addClass("collapse").addClass("in")
+
+                    var ulListDiv = $("<ul>")
+                    ulListDiv.addClass("list-unstyled")
+
+
+                for (var j = 0; j < eventsData.length && j<=5; j++) {
+
+                var dateValue = eventsData[j].datetime;
+                var venueDate1 = moment(dateValue).format("MMM DD YYYY")
+
+    console.log(eventsData[j].venue)
+
+                ulListDiv.append('<li>' +
+                                    '<div class="ticket">'+
+                                        ' <h5>' +eventsData[j].venue.name +
+                                        '<br> <small>' + eventsData[j].venue.city + ', ' + eventsData[j].venue.country  + '</small> </h5>' +
+                                    '</div>' +
+                                    '<div class="price">'+
+                                    // '<div class="value"><b>$</b>599</div>'+
+                                    '<div class="value"><small>' + venueDate1 + '</small></div>'+
+                                '</div>'+
+                                '<a href="#" class="btn btn-info btn-sm btn-buy">Search Flights!</a>'+
+                                '</li>')
+                }
+
+
+                collapseDiv.append(ulListDiv)
+                ticketCardDiv.append(collapseDiv)
+
+
+    /////////////////////////////   foooter  ////////////////////////////////////////
+                ticketCardDiv.append ('<div class="footer"> <button class="btn toggle-tickets">Show Tickets</button></div>')
+
+
+                featuredDiv2.append(ticketCardDiv)
+                featuredDiv1.append(featuredDiv2)
+
+            });
+        });
+    }
+
+
+    $("#featured-div").append(featuredDiv1);
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// when user clicks #search-btn...
 	$("#search-btn").on("click", function() {
 
@@ -320,7 +485,7 @@ function searchBandsInTown(artist) {
 	    // console log the userArtist variable as a test
     	console.log("User Search Input: " + userArtist);
 
-    	// call searchBandsInTown function 
+    	// call searchBandsInTown function
     	searchBandsInTown(userArtist);
 
 	});
