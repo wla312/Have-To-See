@@ -18,6 +18,7 @@ var flightPrice;
 var flightCarrier;
 var fDate;
 var flightDate;
+var flightInfoDiv;
 
 
 
@@ -38,7 +39,7 @@ function searchBandsInTown(artist) {
     }).done(function(response) {
 
     	// test functionality
-    	console.log(response);
+    	// console.log(response);
 
         var artistDates = response;
 
@@ -60,6 +61,9 @@ function searchBandsInTown(artist) {
         		newDiv = $("<div>");
         		// add bootstrap class to the div
         		newDiv.addClass("well");
+
+                // create unique identifier for each well (dynamic flight info population attempt)
+                // newDiv.attr("id", "tourDiv-" + response[i].artist_event_id);
 
         		// create a div within the newDiv for the date (for formatting purposes)
         		dateDiv = $("<div>");
@@ -94,6 +98,10 @@ function searchBandsInTown(artist) {
                 // create button to see flights
                 seeFlights = $("<button>");
                 seeFlights.addClass("see-flights btn btn-default btn-lg");
+
+                // dynamic flight info population attempt
+                seeFlights.attr("id", response[i].artist_event_id);
+
                 seeFlights.attr("lat", response[i].venue.latitude);
                 seeFlights.attr("long", response[i].venue.longitude);
                 seeFlights.attr("flightdat",flightDate);
@@ -122,6 +130,11 @@ function searchBandsInTown(artist) {
 
         		// append venueDiv to newDiv
         		newDiv.append(venueDiv);
+
+                // dynamic flight info attempt
+                flightInfoDiv = $("<div>");
+                flightInfoDiv.attr("id", "tourDiv-" + response[i].artist_event_id);
+                newDiv.append(flightInfoDiv);
 
         		// append the new divs to the #results-div
         		$("#results-div").append(newDiv);
@@ -166,6 +179,10 @@ function searchBandsInTown(artist) {
         venueLong = $(this).attr("long");
         flightDate = $(this).attr("flightdat");
 
+        // dynamic flight info population attempt
+        console.log($(this).attr("id"));
+        var tourID = $(this).attr("id");
+
         // ajax call to airportsfinder API for each tour stop
         $.ajax({
         type: "GET",
@@ -179,7 +196,7 @@ function searchBandsInTown(artist) {
         }).done(function(result){
             var venueAirportCode = result.code;
             var bestFlight = flightDate;
-            console.log(venueAirportCode);
+            // console.log(venueAirportCode);
 
             var body = {
                 "request": {
@@ -196,7 +213,7 @@ function searchBandsInTown(artist) {
                 }
             }
 
-            var queryURL = "https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyDfaUhACZQENh5FejRFNBxjGt40gQYmqB0";
+            var queryURL = "https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyABQYp0wRKZ16Gn2_nJ_cmMFx0V9fVEj9k";
 
             $.ajax({
                 url: queryURL,
@@ -227,7 +244,8 @@ function searchBandsInTown(artist) {
                 // flightCarrierPara.text("Airline: " + flightCarrier);
                 // flightsDiv.append(flightCarrierPara);
 
-                // newDiv.append(flightsDiv);
+                $(".see-flights").siblings("#tourDiv-" + tourID).html("Flights from: " + flightPrice + "<br>" + "Airline: " + flightCarrier);
+
 
             });
         })
