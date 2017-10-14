@@ -1,3 +1,59 @@
+//NEED TO WORK ON:
+//ensure all input is lowercase
+//pull the six search terms with the highest value
+//display six search terms in the correct field
+
+  var config = {
+    apiKey: "AIzaSyDYYDjjvutEE5N9W7q1Xm7ATTukiEE_6s4",
+    authDomain: "have-to-see.firebaseapp.com",
+    databaseURL: "https://have-to-see.firebaseio.com",
+    projectId: "have-to-see",
+    storageBucket: "",
+    messagingSenderId: "947657490005"
+  };
+  firebase.initializeApp(config);
+
+      var database = firebase.database();
+
+        var userArtist = "";
+      
+      $("#search-btn").on("click", function(event) {
+        event.preventDefault();
+        userArtist = $("#searchBand").val().trim();
+
+        var gsw = {
+          userArtist: userArtist,
+        }
+
+        
+        database.ref('searchTerms').once('value').then(function(snapshot) {
+            console.log(snapshot.val());
+            console.log("artist: " + userArtist);
+
+            if(snapshot.child(userArtist).val()){
+                console.log(snapshot.child(userArtist).val());
+                var searchValue = snapshot.child(userArtist).val();
+                searchValue++;
+                database.ref('searchTerms/' + userArtist).set(searchValue);
+            }
+            else {
+                database.ref('searchTerms/' + userArtist).set(1);
+            }
+        });
+      
+      database.ref().orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
+        var mysnapshot = "Recent Searches :";
+        // Print the initial data to the console.
+        console.log(mysnapshot, snapshot.val());
+
+        $("#displayed-data").append("<h1>" + " " + snapshot.val().userArtist + "</h1>");
+        
+     }, 
+      function(errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      });
+  });
+
 // band search JS file
 
 // global variables
