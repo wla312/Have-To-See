@@ -7,6 +7,8 @@ var venueLong;
 // var tourArray = [];
 
 var seeFlights;
+var = carrierName;
+var = flightCost;
 
 $(document).ready(function() {
 
@@ -101,16 +103,16 @@ function searchBandsInTown(artist) {
         		newDiv.append(venueDiv);
 
                 //create a new div for flight information
-                var flightsDiv = $("<div>");
-                flightsDiv.addClass("flights-div");
+                // var flightsDiv = $("<div>");
+                // flightsDiv.addClass("flights-div");
 
-                var flightInfo1 = $("<p>");
-                flightInfo1.text("flights placeholder 1");
-                flightsDiv.append(flightInfo1);
-                var flightInfo2 = $("<p>");
-                flightInfo2.text("flights placeholder 2");
-                flightsDiv.append(flightInfo2);
-                newDiv.append(flightsDiv);
+                // var flightInfo1 = $("<p>");
+                // flightInfo1.text(carrierName);
+                // flightsDiv.html(flightInfo1);
+                // var flightInfo2 = $("<p>");
+                // flightInfo2.text(flightCost);
+                // flightsDiv.append(flightInfo2);
+                // newDiv.append(flightsDiv);
 
         		// append the new divs to the #results-div
         		$("#results-div").append(newDiv);
@@ -120,25 +122,25 @@ function searchBandsInTown(artist) {
 
                 // assign values to global venueLat and venueLong variables for venue latitude and venue longitude
 
-                venueLat = response[i].venue.latitude;
-                venueLong = response[i].venue.longitude;
+                // venueLat = response[i].venue.latitude;
+                // venueLong = response[i].venue.longitude;
 
-                // ajax call to airportsfinder API for each tour stop
-                $.ajax({
-                type: "GET",
-                url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/nearest?lat=" + venueLat + "&lng=" + venueLong,
-                // url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/by-text?berlin",
-                dataType: "json",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("X-Mashape-Key", "YKavuk3HBMmshdVc1YxGBc83cJy7p1r1GBejsn5eMZzj7eGeYz");
-                    xhr.setRequestHeader("Accept", "application/json");
-                    }
-                }).done(function(result){
-                    console.log(result);
+                // // ajax call to airportsfinder API for each tour stop
+                // $.ajax({
+                // type: "GET",
+                // url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/nearest?lat=" + venueLat + "&lng=" + venueLong,
+                // // url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/by-text?berlin",
+                // dataType: "json",
+                // beforeSend: function (xhr) {
+                //     xhr.setRequestHeader("X-Mashape-Key", "YKavuk3HBMmshdVc1YxGBc83cJy7p1r1GBejsn5eMZzj7eGeYz");
+                //     xhr.setRequestHeader("Accept", "application/json");
+                //     }
+                // }).done(function(result){
+                //     console.log(result);
 
-                // artistDates[i].airportCode = result.code;
+                // // artistDates[i].airportCode = result.code;
 
-                // })
+                // });
     		}
     	}
     });
@@ -193,6 +195,21 @@ function searchBandsInTown(artist) {
             }).done(function(response) {
 
                 console.log(response);
+                var carrierName = response.trips.data.carrier[0].name;
+                console.log(response.trips.data.carrier[0].name);
+                var flightCost = response.trips.tripOption[0].saleTotal;
+                console.log(response.trips.tripOption[0].saleTotal);
+
+                var flightsDiv = $("<div>");
+                flightsDiv.addClass("flights-div");
+
+                var flightInfo1 = $("<p>");
+                flightInfo1.text(carrierName);
+                flightsDiv.append(flightInfo1);
+                var flightInfo2 = $("<p>");
+                flightInfo2.text(flightCost);
+                flightsDiv.append(flightInfo2);
+                // newDiv.append(flightsDiv);
             });
         })
     });
