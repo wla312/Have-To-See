@@ -72,6 +72,8 @@ var newDivHeadline;
 var newDivSnippet;
 var flightPrice;
 var flightCarrier;
+var fDate;
+var flightDate;
 
 
 
@@ -133,6 +135,10 @@ function searchBandsInTown(artist) {
         		venueDate = moment(dateDivValue).format("MMM Do YYYY")
         		doorsOpen = moment(dateDivValue).format("h:mm");
 
+                // flight date variables
+                var fDate = moment(dateDivValue).format("YYYY-MM-DD");
+                var flightDate = moment(fDate).subtract(1, "day").format("YYYY-MM-DD");
+
 
         		datePara.text(venueDate);
         		timePara.text(doorsOpen);
@@ -146,6 +152,7 @@ function searchBandsInTown(artist) {
                 seeFlights.addClass("see-flights btn btn-default btn-lg");
                 seeFlights.attr("lat", response[i].venue.latitude);
                 seeFlights.attr("long", response[i].venue.longitude);
+                seeFlights.attr("flightdat",flightDate);
                 seeFlights.text("See Flights");
                 newDiv.append(seeFlights);
 
@@ -213,6 +220,7 @@ function searchBandsInTown(artist) {
         // assign values to global venueLat and venueLong variables for venue latitude and venue longitude
         venueLat = $(this).attr("lat");
         venueLong = $(this).attr("long");
+        flightDate = $(this).attr("flightdat");
 
         // ajax call to airportsfinder API for each tour stop
         $.ajax({
@@ -226,6 +234,7 @@ function searchBandsInTown(artist) {
             }
         }).done(function(result){
             var venueAirportCode = result.code;
+            var bestFlight = flightDate;
             console.log(venueAirportCode);
 
             var body = {
@@ -233,7 +242,7 @@ function searchBandsInTown(artist) {
                     "slice": [{
                         "origin": "CHI",
                         "destination": venueAirportCode,
-                        "date": "2017-10-31"
+                        "date": bestFlight
                     }],
                     "passengers": {
                         "adultCount": 1
