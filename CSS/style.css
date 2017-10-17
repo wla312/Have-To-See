@@ -21,8 +21,21 @@
 	margin-top: 30px;
 }
 
-.flights-div {
-	/*display: inline-block;*/
+/*.flights-div {
+	display: inline-block;
 	margin-left: 150px;
 
+}*/
+
+.well {
+	background-color:  #ccf2ff;
+	border border-style: dotted;
 }
+
+.well div[id^="tourDiv-"] {
+	background-color: pink;
+/*	font-weight: bold;
+	border-style: solid;*/
+
+}
+
