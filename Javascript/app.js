@@ -20,6 +20,8 @@ var flightCarrier;
 var fDate;
 var flightDate;
 var flightInfoDiv;
+var ticketLink;
+var link;
 
 
 
@@ -57,6 +59,7 @@ function searchBandsInTown(artist) {
     		var noShowsDiv = $("<div>");
     		noShowsDiv.addClass("text-center");
     		var noShowsPara = $("<p>");
+            noShowsPara.attr("id", "no-shows");
     		noShowsPara.text("Sorry, we don't know of any upcoming shows for " + artist + ".");
     		noShowsDiv.append(noShowsPara);
     		$("#results-div").append(noShowsDiv);
@@ -85,6 +88,13 @@ function searchBandsInTown(artist) {
         		// date formatting with moment.js
         		dateDivValue = response[i].datetime;
 
+                ticketLink = response[i].offers[0].url;
+                console.log("Ticket" + ticketLink);
+
+                link = $('<a>').attr('href', ticketLink).attr('target', '_blank').text('Tickets');
+
+                console.log(link);
+
         		// test
         		// console.log(dateDivValue);
         		// console.log(moment(dateDivValue).format("MMM Do YYYY"));
@@ -106,7 +116,7 @@ function searchBandsInTown(artist) {
 
                 // create button to see flights
                 seeFlights = $("<button>");
-                seeFlights.addClass("see-flights btn btn-default btn-lg");
+                seeFlights.addClass("see-flights btn btn-primary btn-md");
 
                 // dynamic flight info population attempt
                 seeFlights.attr("id", response[i].artist_event_id);
@@ -142,7 +152,10 @@ function searchBandsInTown(artist) {
 
                 // dynamic flight info attempt
                 flightInfoDiv = $("<div>");
+                flightInfoDiv.addClass("text-center");
+                flightInfoDiv.addClass("flightstyle");
                 flightInfoDiv.attr("id", "tourDiv-" + response[i].artist_event_id);
+                flightInfoDiv.attr("id", );
                 newDiv.append(flightInfoDiv);
 
         		// append the new divs to the #results-div
@@ -153,6 +166,28 @@ function searchBandsInTown(artist) {
     	}
     });
 };
+
+// function to dynamically add user searched artist image
+function grabArtistPoster(artist) {
+    // querying the bandsintown api upcoming artist events for the selected artist
+    var queryURL = "https://rest.bandsintown.com/artists/" + artist + "?app_id=havetosee";
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).done(function(response) {
+
+        // test functionality
+        // console.log(response.image_url);
+
+        // variable for artistPoster img source
+        var artistPoster = $("<img>").attr("src", response.image_url);
+        artistPoster.addClass("artist-poster");
+        artistPoster.addClass("img-thumbnail");
+
+        // insert it at the FRONT/TOP of the #results-div
+        $("#results-div").prepend(artistPoster);
+    });
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -209,7 +244,7 @@ function searchBandsInTown(artist) {
                 }
             }
 
-            var queryURL = "https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyABQYp0wRKZ16Gn2_nJ_cmMFx0V9fVEj9k";
+            var queryURL = "https://www.googleapis.com/qpxExpress/v1/trips/search?key=AIzaSyDfaUhACZQENh5FejRFNBxjGt40gQYmqB0";
 
             $.ajax({
                 url: queryURL,
@@ -240,7 +275,8 @@ function searchBandsInTown(artist) {
                 // flightCarrierPara.text("Airline: " + flightCarrier);
                 // flightsDiv.append(flightCarrierPara);
 
-                $(".see-flights").siblings("#tourDiv-" + tourID).html("Flights from: " + flightPrice + "<br>" + "Airline: " + flightCarrier);
+                $(".see-flights").siblings("#tourDiv-" + tourID).html("Flights from: " + flightPrice + "<br>" + "Airline: " + flightCarrier + "<br>");
+                $("#tourDiv-" + tourID).append(link);
 
 
             });
@@ -288,7 +324,7 @@ function searchBandsInTown(artist) {
                 var ticketCardDiv = $("<div>");
                 ticketCardDiv.addClass("ticket-card");
 
-          var trainTime = eventsData[0].datetime
+          var trainTime = eventsData[0].datetime;
 
                 var dateDivValue = eventsData[0].datetime;
                 var venueDate = moment(dateDivValue).format("MMM DD YYYY")
@@ -454,6 +490,9 @@ $(document).ready(function(){
 
 	    // console log the userArtist variable as a test
     	console.log("User Search Input: " + userArtist);
+
+            // call grabArtistPoster
+        grabArtistPoster(userArtist);
 
     	// call searchBandsInTown function
     	searchBandsInTown(userArtist);
