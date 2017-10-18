@@ -414,6 +414,7 @@ function grabArtistPoster(artist) {
 
 
 
+
 $(document).ready(function(){
   var config = {
     apiKey: "AIzaSyDYYDjjvutEE5N9W7q1Xm7ATTukiEE_6s4",
@@ -452,6 +453,7 @@ $(document).ready(function(){
     for (var i = 0; i < featured.length; i++) {
     artistFun(featured[i])
     }
+});
             // console.log(array)
 
         var userArtist = "";
@@ -463,6 +465,21 @@ $(document).ready(function(){
         var gsw = {
           userArtist: userArtist,
         }
+
+        database.ref('searchTerms').once('value').then(function(snapshot) {
+            console.log(snapshot.val());
+            console.log("artist: " + userArtist);
+
+            if(snapshot.child(userArtist).val()){
+                console.log(snapshot.child(userArtist).val());
+                var searchValue = snapshot.child(userArtist).val();
+                searchValue++;
+                database.ref('searchTerms/' + userArtist).set(searchValue);
+            }
+            else {
+                database.ref('searchTerms/' + userArtist).set(1);
+            }
+        //});
 
      },
       function(errorObject) {
