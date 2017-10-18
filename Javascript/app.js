@@ -1,58 +1,3 @@
-//NEED TO WORK ON:
-//ensure all input is lowercase
-//pull the six search terms with the highest value
-//display six search terms in the correct field
-
-  var config = {
-    apiKey: "AIzaSyDYYDjjvutEE5N9W7q1Xm7ATTukiEE_6s4",
-    authDomain: "have-to-see.firebaseapp.com",
-    databaseURL: "https://have-to-see.firebaseio.com",
-    projectId: "have-to-see",
-    storageBucket: "",
-    messagingSenderId: "947657490005"
-  };
-  firebase.initializeApp(config);
-
-      var database = firebase.database();
-
-        var userArtist = "";
-
-      $("#search-btn").on("click", function(event) {
-        event.preventDefault();
-        userArtist = $("#searchBand").val().trim();
-
-        var gsw = {
-          userArtist: userArtist,
-        }
-
-
-        database.ref('searchTerms').once('value').then(function(snapshot) {
-            console.log(snapshot.val());
-            console.log("artist: " + userArtist);
-
-            if(snapshot.child(userArtist).val()){
-                console.log(snapshot.child(userArtist).val());
-                var searchValue = snapshot.child(userArtist).val();
-                searchValue++;
-                database.ref('searchTerms/' + userArtist).set(searchValue);
-            }
-            else {
-                database.ref('searchTerms/' + userArtist).set(1);
-            }
-        });
-
-      database.ref().orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
-        var mysnapshot = "Recent Searches :";
-        // Print the initial data to the console.
-        console.log(mysnapshot, snapshot.val());
-
-        $("#displayed-data").append("<h1>" + " " + snapshot.val().userArtist + "</h1>");
-
-     },
-      function(errorObject) {
-        console.log("The read failed: " + errorObject.code);
-      });
-  });
 
 // band search JS file
 
@@ -203,29 +148,7 @@ function searchBandsInTown(artist) {
         		// append the new divs to the #results-div
         		$("#results-div").append(newDiv);
 
-                // test to see if I can log the lat/long values for each show
-                // console.log("Venue: " + response[i].venue.name + " Lat: " + response[i].venue.latitude + " Long: " + response[i].venue.longitude);
-
-                // assign values to global venueLat and venueLong variables for venue latitude and venue longitude
-                // venueLat = response[i].venue.latitude;
-                // venueLong = response[i].venue.longitude;
-
-                // ajax call to airportsfinder API for each tour stop
-                // $.ajax({
-                // type: "GET",
-                // url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/nearest?lat=" + venueLat + "&lng=" + venueLong,
-                // // url: "https://cometari-airportsfinder-v1.p.mashape.com/api/airports/by-text?berlin",
-                // dataType: "json",
-                // beforeSend: function (xhr) {
-                //     xhr.setRequestHeader("X-Mashape-Key", "YKavuk3HBMmshdVc1YxGBc83cJy7p1r1GBejsn5eMZzj7eGeYz");
-                //     xhr.setRequestHeader("Accept", "application/json");
-                //     }
-                // }).done(function(result){
-                //     console.log(result);
-
-                // artistDates[i].airportCode = result.code;
-
-                // })
+             
     		}
     	}
     });
@@ -334,18 +257,9 @@ function searchBandsInTown(artist) {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    var featured = ["madona", "the weeknd", "drake"]
 
-
-    /////////////////////// THIS CREATES A ROW WHERE ALL FEATURED ARTISTS WILL APPEAR //////////////////////////////
-    var featuredDiv1 = $("<div>");
-    featuredDiv1.addClass("row");
-
-    /////////////////////// THIS WILL LOOP THROUGH ALL THE ARTISTS FEATURED ON OUR WEBSITE /////////////////////////
-    for (var i = 0; i < featured.length; i++) {
-    artistFun(featured[i])
-    }
-
+        var featuredDiv1 = $("<div>");
+        featuredDiv1.addClass("row");
 
         function artistFun (arr) {
         var queryURL1 = "https://rest.bandsintown.com/artists/" + arr + "?app_id=havetosee";
@@ -402,12 +316,12 @@ function searchBandsInTown(artist) {
                                             // "<h6 class='info'>Global Tour 2016</h6>" +
                                             "<h4 class='name'>" +artistData.name+ "</h4>"+
                                         "</div>"+
-                                        "<div class='price'>" +
-                                            "<div class='from'>From</div>" +
-                                                "<div class='value'>" +
-                                                "<b>$</b>599" +
-                                            "</div>" +
-                                        "</div>" +
+                                        // "<div class='price'>" +
+                                            // "<div class='from'>From</div>" +
+                                            //     "<div class='value'>" +
+                                                // "<b>$</b>599" +
+                                            // "</div>" +
+                                        // "</div>" +
                                         "<div class='clearfix'></div>" +
                                         "</div>"
     )
@@ -415,7 +329,8 @@ function searchBandsInTown(artist) {
 
 
                 var collapseDiv = $("<div>")
-                collapseDiv.addClass("collapse").addClass("in")
+                collapseDiv.addClass("collapse")
+                // collapseDiv.addClass("in")
 
                     var ulListDiv = $("<ul>")
                     ulListDiv.addClass("list-unstyled")
@@ -463,7 +378,62 @@ function searchBandsInTown(artist) {
 
 
 
+$(document).ready(function(){
+  var config = {
+    apiKey: "AIzaSyDYYDjjvutEE5N9W7q1Xm7ATTukiEE_6s4",
+    authDomain: "have-to-see.firebaseapp.com",
+    databaseURL: "https://have-to-see.firebaseio.com",
+    projectId: "have-to-see",
+    storageBucket: "",
+    messagingSenderId: "947657490005"
+  };
+  firebase.initializeApp(config);
 
+      var database = firebase.database();
+
+      database.ref().orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
+        var mysnapshot = "Recent Searches :";
+        // Print the initial data to the console.
+        console.log(mysnapshot, snapshot.val());
+
+        var array = []
+        var target =snapshot.val()
+        for (var k in target){
+            if (typeof target[k] !== 'function') {
+                 array.push(k)
+            }
+        }
+
+            var featured = []
+    for (var i = 0; i < 3; i++) {
+        featured.push(array[i]); 
+    }
+    console.log("featured: " + featured);
+    console.log("array " + array);
+
+
+    /////////////////////// THIS WILL LOOP THROUGH ALL THE ARTISTS FEATURED ON OUR WEBSITE /////////////////////////
+    for (var i = 0; i < featured.length; i++) {
+    artistFun(featured[i])
+    }
+            // console.log(array)
+
+        var userArtist = "";
+
+      $("#search-btn").on("click", function(event) {
+        event.preventDefault();
+        userArtist = $("#searchBand").val().trim();
+
+        var gsw = {
+          userArtist: userArtist,
+        }
+
+     },
+      function(errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      });
+  });
+}) 
 
 
 
@@ -498,4 +468,22 @@ function searchBandsInTown(artist) {
         // empty the #searchBand input
         $("#searchBand").val("");
     });
+
+$(document).ready(function(){
+    console.log('ready');
+    $(document).on("click",'.toggle-tickets', function() {
+  $tickets = $(this).parent().siblings('.collapse');
+ 
+  if ($tickets.hasClass('in')) {
+    $tickets.collapse('hide');
+    $(this).html('Show Tickets');
+    $(this).closest('.ticket-card').removeClass('active');
+  } else {
+    $tickets.collapse('show');
+    $(this).html('Hide Tickets');
+    $(this).closest('.ticket-card').addClass('active');
+  }
+});
+});
+
 });
