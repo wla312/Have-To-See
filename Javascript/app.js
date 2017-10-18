@@ -352,7 +352,7 @@ function searchBandsInTown(artist) {
                                     // '<div class="value"><b>$</b>599</div>'+
                                     '<div class="value"><small>' + venueDate1 + '</small></div>'+
                                 '</div>'+
-                                '<a href="#" class="btn btn-info btn-sm btn-buy">Search Flights!</a>'+
+                                // '<a href="#" class="btn btn-info btn-sm btn-buy">Search Flights!</a>'+
                                 '</li>')
                 }
 
