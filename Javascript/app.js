@@ -82,9 +82,7 @@ function searchBandsInTown(artist) {
                 ticketLink = response[i].offers[0].url;
                 console.log("Ticket" + ticketLink);
 
-                link = $('<a>').attr('href', ticketLink).attr('target', '_blank').text('Concert Tickets & RSVP');
-
-                console.log(link);
+                
 
                 // test
                 // console.log(dateDivValue);
@@ -115,6 +113,7 @@ function searchBandsInTown(artist) {
                 seeFlights.attr("lat", response[i].venue.latitude);
                 seeFlights.attr("long", response[i].venue.longitude);
                 seeFlights.attr("flightdat",flightDate);
+                seeFlights.attr("tlink", ticketLink);
                 seeFlights.text("Plan Trip");
                 newDiv.append(seeFlights);
 
@@ -195,6 +194,9 @@ $(document).on("click",".see-flights",function(){
     venueLat = $(this).attr("lat");
     venueLong = $(this).attr("long");
     flightDate = $(this).attr("flightdat");
+    link = $(this).attr("tlink");
+
+    console.log("LINK" + link);
 
     // dynamic flight info population attempt
     console.log($(this).attr("id"));
@@ -250,7 +252,7 @@ $(document).on("click",".see-flights",function(){
             console.log(flightCarrier);
 
             $(".see-flights").siblings("#tourDiv-" + tourID).html("Flights from: " + flightPrice + "<br>" + "Airline: " + flightCarrier + "<br>");
-            $("#tourDiv-" + tourID).append(link);
+            $("#tourDiv-" + tourID).append($('<a/>').attr("href", link).attr("target", "_blank").text("Concert Tickets & RSVP"));
         });
     })
 });
