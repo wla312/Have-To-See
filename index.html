@@ -16,36 +16,43 @@
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
 
-    <title>Have To See</title>
+    <title>Ontourage</title>
 </head>
 
 <body>
 
 <div class="wrapper">
+
 <!-- container div for search html elements -->
-
-    <div class="container">
-
-    <br><br>
+<div class="container">
 
         <!-- div for header/title of page -->
-    <div class="jumbotron">
-        <h1 class="text-center">Musichead Travel</h1>
+    <div class="text-center">
+        <!-- free logo -->
+        <img id="logo" src="Images/Logomakr_1To7RB.png" alt="ontourage logo">
+
+        <!-- <h1 class="text-center">Musichead Travel</h1> -->
+
+    </div>
+
+    <div id="welcome" class="text-center">
+        <p>Welcome to Ontourage! We're here to help you see your favorite bands when they are on tour. Just enter a band/musician into our search bar to get started.
+        <hr>
     </div>
 
     <!-- form for artist/musician search field -->
     <form>
         <!-- input for search term/keywords -->
         <div class="form-group">
-            <label class="instruction" for="searchBand"><span id="enter">Enter Musician/Band Name Here:</span></label>
-            <input type="text" class="form-control" id="searchBand" placeholder="">
+            <label class="instruction" for="searchBand"><span id="enter">Search Upcoming Tour Dates:</span></label>
+            <input type="text" class="form-control" id="searchBand" placeholder="Enter Musician/Band Name Here">
         </div>
     </form>
 
     <!-- buttons -->
-    <button type="button" class="btn btn-primary" id="search-btn">Search</button>
+    <button type="button" class="btn btn-default" id="search-btn">Search</button>
 
-    <button type="button" class="btn btn-primary" id="clear-btn">Clear Results</button>
+    <button type="button" class="btn btn-default" id="clear-btn">Clear Results</button>
 
 </div>
 
@@ -54,7 +61,15 @@
 <!-- div to push all search results html -->
 <div class="container" id="results-div"></div>
 
+<div class="container">
+    <hr>
+    <h1 class="text-center" id="recent-user-header">Popular User Searches</h1>
+</div>
+
 <div class="container" id="featured-div"> </div>
+
+<!-- microphone graphic by <a href="https://thenounproject.com/gabriellacinque">tnp_gabriellacinque</a> from <a href="https://thenounproject.com/">TheNounProject</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>. Check out the new logo that I created on <a href="http://logomakr.com" title="Logo Maker">LogoMaker.com</a> https://logomakr.com/1To7RB1To7RB -->
+
 </div>
 <!-- jquery link-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
