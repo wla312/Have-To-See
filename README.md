@@ -1,4 +1,4 @@
-### Ontourage
+# Ontourage
 
 ## Description: 
 A web app for users to search for bands/musicians on tour, and to compare travel costs for each destination to determine which tour date to book.
