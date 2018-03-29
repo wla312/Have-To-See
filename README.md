@@ -6,13 +6,6 @@ A web app for users to search for bands/musicians on tour, and to compare travel
 ## NOTE:
 The QPX Express API (fka Google Flights) will be discontinued on April 10, 2018. As of this commit, I have not taken steps to find an alternative free flight API.
 
-## Authors:
-Al Rodis github: alrodis
-Gintas Vasiliauskas, github: GintasVasiliauskas
-Trey Hepner, github: ggh3
-Whitney Webster, github: whitaweb
-Will Alt, github: wla312
-
 ## Live Version: 
 https://kingsguard-nu815.github.io/Have-To-See/
 
